@@ -1,14 +1,25 @@
-﻿namespace Rekod.Model
+﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
+
+namespace Rekod.Model
 {
     public class Deck
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
         public string DeckName { get; set; }
+
+        [TextBlob("CardsBlobbed")]
         public List<Card> CardList { get; set; }
 
-        public Deck(string name)
+        public string CardsBlobbed { get; set; }
+
+        public Deck()
         {
-            DeckName = name;
             CardList = new List<Card>();
+            CardsBlobbed = string.Empty;
         }
+
     }
 }

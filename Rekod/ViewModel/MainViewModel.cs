@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Rekod.Model;
+using Rekod.Services;
 using Rekod.Views;
 using System.Collections.ObjectModel;
 
@@ -17,7 +18,7 @@ namespace Rekod.ViewModel
         public MainViewModel()
         {
             deckCollection = new ObservableCollection<Deck>();
-            
+            Refresh();
         }
 
         [RelayCommand]
@@ -27,19 +28,23 @@ namespace Rekod.ViewModel
 
             if (!string.IsNullOrEmpty(deckName))
             {
-                deckItem = new Deck(deckName);
-                deckCollection.Add(deckItem);
-                
-                //DeckItem = null;
+                deckItem = new Deck();
+                deckItem.DeckName = deckName;
+                deckItem.CardList = new();
+                //deckCollection.Add(deckItem);
+                await DeckDataService.AddDeck(deckItem);
+                await Refresh();
             }
         }
 
         [RelayCommand]
-        private void DeleteDeck(Deck deck)
+        private async void DeleteDeck(Deck deck)
         {
             if (deckCollection.Contains(deck))
             {
-                deckCollection.Remove(deck);
+                await DeckDataService.RemoveDeck(deck.Id);
+                await Refresh();
+                //deckCollection.Remove(deck);
             }
         }
 
@@ -49,8 +54,21 @@ namespace Rekod.ViewModel
             await Shell.Current.GoToAsync(nameof(DeckManagementPage),
                 new Dictionary<string, object>
                 {
-                    ["Deck"] = deck
+                    ["Deck"] = deck,
+                    ["DeckCollection"] = deckCollection
                 });
+        }
+
+        [RelayCommand]
+        private async Task Refresh()
+        {
+            DeckCollection.Clear();
+            var deckList = await DeckDataService.GetDecks();
+            
+            foreach(Deck deck in deckList)
+            {
+                DeckCollection.Add(deck);
+            }
         }
     }
 }

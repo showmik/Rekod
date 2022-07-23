@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 
 namespace Rekod.Model
 {
     public class Card
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
         public string FrontText { get; set; }
         public string BackText { get; set; }
 
-        public Card(string front, string back)
-        {
-            FrontText = front;
-            BackText = back;
-        }
+        //public Card(string front, string back)
+        //{
+        //    FrontText = front;
+        //    BackText = back;
+        //}
     }
 }

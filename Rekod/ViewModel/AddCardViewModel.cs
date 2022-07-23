@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Rekod.Model;
+using Rekod.Services;
 
 namespace Rekod.ViewModel
 {
@@ -17,13 +18,18 @@ namespace Rekod.ViewModel
         private string backText;
 
         [RelayCommand]
-        private void Add()
+        private async Task AddAsync()
         {
             if(!string.IsNullOrEmpty(FrontText) && !string.IsNullOrEmpty(BackText))
             {
-                deck.CardList.Add(new Card(FrontText, BackText));
-                FrontText = string.Empty;
-                BackText = string.Empty;
+                //deck.CardList.Add(new Card(FrontText, BackText));
+                //FrontText = string.Empty;
+                //BackText = string.Empty;
+
+                //await CardServices.AddCard(FrontText, BackText);
+                await CardServices.AddCard("Hello", "YO");
+                //var cards = await CardServices.GetCards();
+                //deck.CardList.AddRange(cards);
             }
         }
     }

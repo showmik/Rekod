@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Rekod.ViewModel"
+             xmlns:model="clr-namespace:Rekod.Model"
              x:DataType="viewmodel:MainViewModel"
              x:Class="Rekod.MainPage">
 
@@ -22,8 +23,9 @@
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding DeckCollection}"
                         SelectionMode="None">
+            
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type x:String}">
+                <DataTemplate x:DataType="{x:Type model:Deck}">
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems>
@@ -41,7 +43,7 @@
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
                                                           CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
-                                <Label Text="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeckItem.DeckName}"
+                                <Label Text="{Binding DeckName}"
                                        FontSize="14" />
                             </Frame>
                         </Grid>

@@ -2,27 +2,78 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Rekod.ViewModel"
+             xmlns:model="clr-namespace:Rekod.Model"
              x:DataType="viewmodel:DeckManagementViewModel"
              x:Class="Rekod.Views.DeckManagementPage"
              Title="Study Deck">
-    <Grid RowDefinitions="auto, auto"
-          ColumnDefinitions="auto, auto"
-          HorizontalOptions="Center"
+
+    <Grid ColumnDefinitions=".20*, auto"
           Margin="10"
           RowSpacing="10"
           ColumnSpacing="10">
-        
-        <Label Grid.Row="0"
-               Grid.ColumnSpan="2"
-               Text="Welcome to .NET MAUI!"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Button Text="Study"
-                Grid.Row="1"
-                Grid.Column="0" />
-        <Button Text="Add Card"
-                Grid.Row="1"
-                Grid.Column="1" 
-                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=AddCardCommand}"/>
+
+        <CollectionView Grid.RowSpan="4"
+                        Grid.Column="0"
+                        ItemsSource="{Binding Deck.CardList}"
+                        BackgroundColor="LightGray"
+                        HorizontalOptions="FillAndExpand"
+                        MinimumWidthRequest="150"
+                        SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type model:Card}">
+                    <Grid Padding="0, 2">
+                        <Frame>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=TapCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+
+                            <Label Text="{Binding FrontText}"
+                                   FontSize="12" />
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              RowDefinitions="auto, auto"
+              ColumnDefinitions="auto, auto"
+              RowSpacing="10"
+              ColumnSpacing="10"
+              HorizontalOptions="Center">
+            
+            <VerticalStackLayout Grid.Row="0"
+                                 Grid.ColumnSpan="2">
+                <Label Text="Front:"
+                       FontSize="12"/>
+                <Frame>
+                    <Label Text="{Binding FrontText}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+                </Frame>
+
+                <Label Text="Back:"
+                       FontSize="12" />
+                <Frame>
+                    <Label Text="{Binding BackText}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+                </Frame>
+            </VerticalStackLayout>
+
+            <Button Text="Study"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=ChangeNameCommand}" />
+
+            <Button Text="Add Card"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=AddCardCommand}"
+                    CommandParameter="{Binding .}" />
+        </Grid>
     </Grid>
 </ContentPage>

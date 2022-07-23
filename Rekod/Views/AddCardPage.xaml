@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Rekod.ViewModel"
+             x:DataType="viewmodel:AddCardViewModel"
              x:Class="Rekod.Views.AddCardPage"
              Title="AddCardPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    
+    <VerticalStackLayout Padding="10"
+                         Margin="10">
+
+        <Entry Placeholder="Front"
+               Text="{Binding FrontText}" />
+
+        <Entry Placeholder="Back"
+               Text="{Binding BackText}" />
+
+        <Button Text="Add"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddCardViewModel}}, Path=AddCommand}"
+                CommandParameter="{Binding .}" />
     </VerticalStackLayout>
 </ContentPage>

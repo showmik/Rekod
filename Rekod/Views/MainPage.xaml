@@ -6,6 +6,7 @@
              x:Class="Rekod.MainPage">
 
     <Grid RowDefinitions="auto,*,auto">
+        
         <Frame Grid.Row="0"
                BackgroundColor="#2196F3"
                Padding="24"
@@ -14,6 +15,7 @@
             <Label Text="Rekod"
                    HorizontalTextAlignment="Center"
                    TextColor="White"
+                   FontAttributes="Bold"
                    FontSize="36" />
         </Frame>
 
@@ -31,12 +33,15 @@
                                            CommandParameter="{Binding .}" />
                             </SwipeItems>
                         </SwipeView.RightItems>
-                        <Grid Padding="0, 5">
+                        
+                        <Grid Padding="0, 5"
+                              Margin="10, 0">
                             <Frame>
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"/>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
+                                                          CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
-                                <Label Text="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeckName}"
+                                <Label Text="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeckItem.DeckName}"
                                        FontSize="14" />
                             </Frame>
                         </Grid>
@@ -47,8 +52,11 @@
 
         <Button Grid.Row="2"
                 Text="Create Deck"
-                Margin="80, 20"
+                Margin="0, 20"
+                WidthRequest="150"
+                HeightRequest="50"
                 BackgroundColor="Coral"
-                Command="{Binding AddDeckCommand}" />
+                Command="{Binding AddDeckCommand}" 
+                FontAttributes="Bold"/>
     </Grid>
 </ContentPage>

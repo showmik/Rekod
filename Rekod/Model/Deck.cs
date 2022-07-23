@@ -10,10 +10,5 @@
             DeckName = name;
             CardList = new List<Card>();
         }
-
-        public override string ToString()
-        {
-            return DeckName;
-        }
     }
 }

@@ -17,6 +17,7 @@ namespace Rekod.ViewModel
         public MainViewModel()
         {
             deckCollection = new ObservableCollection<Deck>();
+            
         }
 
         [RelayCommand]

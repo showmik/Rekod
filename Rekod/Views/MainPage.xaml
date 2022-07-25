@@ -6,8 +6,8 @@
              x:DataType="viewmodel:MainViewModel"
              x:Class="Rekod.MainPage">
 
-    <Grid RowDefinitions="auto,*,auto">
-        
+    <Grid RowDefinitions="auto, *, auto">
+
         <Frame Grid.Row="0"
                BackgroundColor="#2196F3"
                Padding="24"
@@ -23,7 +23,7 @@
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding DeckCollection}"
                         SelectionMode="None">
-            
+
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type model:Deck}">
                     <SwipeView>
@@ -35,14 +35,15 @@
                                            CommandParameter="{Binding .}" />
                             </SwipeItems>
                         </SwipeView.RightItems>
-                        
+
                         <Grid Padding="0, 5"
                               Margin="10, 0">
                             <Frame>
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
-                                                          CommandParameter="{Binding .}"/>
+                                                          CommandParameter="{Binding .}" />
                                 </Frame.GestureRecognizers>
+
                                 <Label Text="{Binding DeckName}"
                                        FontSize="14" />
                             </Frame>
@@ -54,11 +55,11 @@
 
         <Button Grid.Row="2"
                 Text="Create Deck"
+                FontAttributes="Bold"
                 Margin="0, 20"
                 WidthRequest="150"
                 HeightRequest="50"
                 BackgroundColor="Coral"
-                Command="{Binding AddDeckCommand}" 
-                FontAttributes="Bold"/>
+                Command="{Binding AddDeckCommand}" />
     </Grid>
 </ContentPage>

@@ -5,7 +5,7 @@
              x:DataType="viewmodel:AddCardViewModel"
              x:Class="Rekod.Views.AddCardPage"
              Title="AddCardPage">
-    
+
     <VerticalStackLayout Padding="10"
                          Margin="10">
 

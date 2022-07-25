@@ -2,6 +2,7 @@
 
 namespace Rekod.Model
 {
+    [Table("Cards")]
     public class Card
     {
         [PrimaryKey, AutoIncrement]
@@ -9,11 +10,5 @@ namespace Rekod.Model
 
         public string FrontText { get; set; }
         public string BackText { get; set; }
-
-        //public Card(string front, string back)
-        //{
-        //    FrontText = front;
-        //    BackText = back;
-        //}
     }
 }

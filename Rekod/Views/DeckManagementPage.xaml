@@ -7,32 +7,28 @@
              x:Class="Rekod.Views.DeckManagementPage"
              Title="Study Deck">
 
-    <Grid ColumnDefinitions=".20*, auto"
-          Margin="10"
-          RowSpacing="10"
-          ColumnSpacing="10">
+    <Grid ColumnDefinitions=".40*, .60*"
+          Margin="10">
 
         <CollectionView Grid.RowSpan="4"
                         Grid.Column="0"
-                        ItemsSource="{Binding Deck.CardList}"
                         BackgroundColor="LightGray"
-                        HorizontalOptions="FillAndExpand"
-                        MinimumWidthRequest="150"
+                        VerticalOptions="Fill"
+                        ItemsSource="{Binding Deck.CardList}"
                         SelectionMode="None">
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type model:Card}">
-                    <Grid Padding="0, 2">
-                        <Frame>
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=TapCommand}"
-                                                      CommandParameter="{Binding .}" />
-                            </Frame.GestureRecognizers>
 
-                            <Label Text="{Binding FrontText}"
-                                   FontSize="12" />
-                        </Frame>
-                    </Grid>
+                    <Frame  Margin="0.5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=TapCommand}"
+                                                  CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+
+                        <Label Text="{Binding FrontText}"
+                               FontSize="12" />
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
@@ -44,11 +40,12 @@
               RowSpacing="10"
               ColumnSpacing="10"
               HorizontalOptions="Center">
-            
+
             <VerticalStackLayout Grid.Row="0"
                                  Grid.ColumnSpan="2">
                 <Label Text="Front:"
-                       FontSize="12"/>
+                       FontSize="12" />
+
                 <Frame>
                     <Label Text="{Binding FrontText}"
                            VerticalOptions="Center"
@@ -57,6 +54,7 @@
 
                 <Label Text="Back:"
                        FontSize="12" />
+
                 <Frame>
                     <Label Text="{Binding BackText}"
                            VerticalOptions="Center"
@@ -67,7 +65,7 @@
             <Button Text="Study"
                     Grid.Row="2"
                     Grid.Column="0"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=ChangeNameCommand}" />
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=StudyDeckCommand}" />
 
             <Button Text="Add Card"
                     Grid.Row="2"

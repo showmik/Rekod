@@ -1,17 +1,13 @@
 ﻿using Rekod.Model;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rekod.Services
 {
-    public static class DeckDataService
+    public static class DeckDataBaseService
     {
-        static SQLiteAsyncConnection db;
-        static async Task Init()
+        private static SQLiteAsyncConnection db;
+
+        private static async Task Init()
         {
             if (db != null)
             {
@@ -19,27 +15,28 @@ namespace Rekod.Services
             }
             var dataBasePath = Path.Combine(FileSystem.AppDataDirectory, "DeckData.db");
             db = new SQLiteAsyncConnection(dataBasePath);
-            await db.CreateTableAsync<Deck>();
+            _ = await db.CreateTableAsync<Deck>();
         }
 
         public static async Task AddDeck(Deck deck)
         {
             await Init();
-            var id = await db.InsertAsync(deck);
+            deck.CardList.Clear();
+            var cards = await CardDataBaseService.GetCards(deck.DeckName);
+            deck.CardList.AddRange(cards);
+            _ = await db.InsertAsync(deck);
         }
 
         public static async Task RemoveDeck(int id)
         {
             await Init();
-            await db.DeleteAsync<Deck>(id);
+            _ = await db.DeleteAsync<Deck>(id);
         }
 
         public static async Task<IEnumerable<Deck>> GetDecks()
         {
             await Init();
-
-            var deckList = await db.Table<Deck>().ToListAsync();
-            return deckList;
+            return await db.Table<Deck>().ToListAsync();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
 
 namespace Rekod.Model
 {
@@ -10,16 +9,12 @@ namespace Rekod.Model
 
         public string DeckName { get; set; }
 
-        [TextBlob("CardsBlobbed")]
+        [Ignore]
         public List<Card> CardList { get; set; }
-
-        public string CardsBlobbed { get; set; }
 
         public Deck()
         {
             CardList = new List<Card>();
-            CardsBlobbed = string.Empty;
         }
-
     }
 }

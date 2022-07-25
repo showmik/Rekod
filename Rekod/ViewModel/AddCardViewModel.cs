@@ -18,19 +18,22 @@ namespace Rekod.ViewModel
         private string backText;
 
         [RelayCommand]
-        private async Task AddAsync()
+        private async Task Add()
         {
             if(!string.IsNullOrEmpty(FrontText) && !string.IsNullOrEmpty(BackText))
             {
-                //deck.CardList.Add(new Card(FrontText, BackText));
-                //FrontText = string.Empty;
-                //BackText = string.Empty;
-
-                //await CardServices.AddCard(FrontText, BackText);
-                await CardServices.AddCard("Hello", "YO");
-                //var cards = await CardServices.GetCards();
-                //deck.CardList.AddRange(cards);
+                await CardDataBaseService.AddCard(deck.DeckName, FrontText, BackText);
+                FrontText = string.Empty;
+                BackText = string.Empty;
+                await Refresh();
             }
+        }
+
+        async Task Refresh()
+        {
+            deck.CardList.Clear();
+            var cards = await CardDataBaseService.GetCards(deck.DeckName);
+            deck.CardList.AddRange(cards);
         }
     }
 }

@@ -11,14 +11,17 @@ namespace Rekod.ViewModel
     {
         [ObservableProperty]
         private ObservableCollection<Deck> deckCollection;
+        
+        private ObservableCollection<string> deckNames;
 
         [ObservableProperty]
-        private Deck deckItem;
+        private ObservableCollection<Deck> deck;
 
         public MainViewModel()
         {
             deckCollection = new ObservableCollection<Deck>();
-            Refresh();
+            deckNames = new ObservableCollection<string>();
+            _ = Refresh();
         }
 
         [RelayCommand]
@@ -26,13 +29,11 @@ namespace Rekod.ViewModel
         {
             string deckName = await Application.Current.MainPage.DisplayPromptAsync("Create Deck", "Enter name of the deck:");
 
-            if (!string.IsNullOrEmpty(deckName))
+            if (!string.IsNullOrEmpty(deckName) && !deckNames.Contains(deckName))
             {
-                deckItem = new Deck();
-                deckItem.DeckName = deckName;
-                deckItem.CardList = new();
-                //deckCollection.Add(deckItem);
-                await DeckDataService.AddDeck(deckItem);
+                deckNames.Add(deckName);
+                Deck deck = new() {DeckName = deckName};
+                await DeckDataBaseService.AddDeck(deck);
                 await Refresh();
             }
         }
@@ -42,20 +43,25 @@ namespace Rekod.ViewModel
         {
             if (deckCollection.Contains(deck))
             {
-                await DeckDataService.RemoveDeck(deck.Id);
+                CardDataBaseService.DeleteDatabase(deck.DeckName);
+                deckNames.Remove(deck.DeckName);
+                await DeckDataBaseService.RemoveDeck(deck.Id);
                 await Refresh();
-                //deckCollection.Remove(deck);
+                deck.CardList.Clear();
             }
         }
 
         [RelayCommand]
         private async Task Tap(Deck deck)
         {
+            deck.CardList.Clear();
+            var cards = await CardDataBaseService.GetCards(deck.DeckName);
+            deck.CardList.AddRange(cards);
+
             await Shell.Current.GoToAsync(nameof(DeckManagementPage),
                 new Dictionary<string, object>
                 {
-                    ["Deck"] = deck,
-                    ["DeckCollection"] = deckCollection
+                    ["Deck"] = deck
                 });
         }
 
@@ -63,11 +69,14 @@ namespace Rekod.ViewModel
         private async Task Refresh()
         {
             DeckCollection.Clear();
-            var deckList = await DeckDataService.GetDecks();
-            
-            foreach(Deck deck in deckList)
+            deckNames.Clear();
+
+            var deckList = await DeckDataBaseService.GetDecks();
+
+            foreach (Deck deck in deckList)
             {
                 DeckCollection.Add(deck);
+                deckNames.Add(deck.DeckName);
             }
         }
     }

@@ -31,7 +31,11 @@ namespace Rekod.ViewModel
         [RelayCommand]
         private async void StudyDeck()
         {
-            await Shell.Current.GoToAsync(nameof(StudyPage));
+            await Shell.Current.GoToAsync(nameof(StudyPage),
+                new Dictionary<string, object>
+                {
+                    ["Deck"] = deck
+                });
         }
 
         [RelayCommand]

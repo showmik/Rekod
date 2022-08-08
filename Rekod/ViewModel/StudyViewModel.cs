@@ -1,32 +1,70 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Rekod.Model;
+using Rekod.Services;
 using System.Collections.ObjectModel;
 
 namespace Rekod.ViewModel
 {
+    [QueryProperty(nameof(Deck), nameof(Deck))]
     public partial class StudyViewModel : ObservableObject
     {
+        [ObservableProperty]
+        private Deck deck;
+
+        private Card currentCard;
+
+        [ObservableProperty]
+        private List<Card> cardCollection;
+
         [ObservableProperty]
         private ObservableCollection<Deck> boxCollection;
 
         [ObservableProperty]
-        private bool haveViewed = false;
+        private bool isReady = false;
 
         [ObservableProperty]
-        private string labelText;
+        private bool isReaveled = false;
 
-        [RelayCommand]
-        private void HelloCard()
+        [ObservableProperty]
+        private bool revealButtonVisible = true;
+
+        [ObservableProperty]
+        private string cardText;
+
+        public StudyViewModel()
         {
-            labelText = "smk";
-            if (haveViewed)
-            {
-                haveViewed = false;
-                return;
-            }
-            haveViewed = true;
+            
         }
 
+        [RelayCommand]
+        private void RevealCard()
+        {
+            if (!IsReaveled)
+            {
+                IsReaveled = true;
+                CardText = currentCard.FrontText;
+            }
+            else
+            {
+                IsReaveled = false;
+            }
+        }
+
+        [RelayCommand]
+        private void Ready()
+        {
+            if (!isReady)
+            {
+                IsReady = true;
+                cardCollection = deck.CardList;
+                currentCard = cardCollection.FirstOrDefault();
+                CardText = currentCard.BackText;
+            }
+            else
+            {
+                IsReady = false;
+            }
+        }
     }
 }

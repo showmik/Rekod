@@ -1,17 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:Rekod.Services"
              xmlns:viewmodel="clr-namespace:Rekod.ViewModel"
              x:DataType="viewmodel:StudyViewModel"
              x:Class="Rekod.Views.StudyPage"
              Title="Study Page">
-
-    <VerticalStackLayout>
-
-        <Button Text="View Card"
-                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=HelloCardCommand}"
-                CommandParameter="{Binding .}" />
-
-    </VerticalStackLayout>
     
+    <ContentPage.Resources>
+        <services:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+
+    <Grid >
+        <Button Text="Tap On The Screen To Study." 
+                FontAttributes="Bold"
+                FontSize="Medium"
+                CornerRadius="0"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=ReadyCommand}"
+                IsVisible="{Binding IsReady, Converter={StaticResource InverseBoolConverter}}"/>
+        
+        <Grid RowDefinitions="auto, auto, auto"
+              RowSpacing="5"
+              Margin="50, 10"
+              IsVisible="{Binding IsReady}">
+
+            <Frame>
+                <Label Text="{Binding CardText}"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
+            </Frame>
+
+            <HorizontalStackLayout Grid.Row="2"
+                                   IsVisible="{Binding IsReaveled}"
+                                   HorizontalOptions="Center"
+                                   Spacing="10">
+                <Button Text="No"
+                        BackgroundColor="Red" />
+
+                <Button Text="Yes" 
+                        BackgroundColor="Green"/>
+                
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Grid.Row="2"
+                                   HorizontalOptions="Center"
+                                   IsVisible="{Binding IsReaveled, Converter={StaticResource InverseBoolConverter}}">
+                <Button Text="Reveal Card"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=RevealCardCommand}" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>

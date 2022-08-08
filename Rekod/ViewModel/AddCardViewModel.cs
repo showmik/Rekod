@@ -17,6 +17,11 @@ namespace Rekod.ViewModel
         [ObservableProperty]
         private string backText;
 
+        public AddCardViewModel()
+        {
+
+        }
+
         [RelayCommand]
         private async Task Add()
         {

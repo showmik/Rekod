@@ -65,7 +65,8 @@
             <Button Text="Study"
                     Grid.Row="2"
                     Grid.Column="0"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=StudyDeckCommand}" />
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=StudyDeckCommand}"
+                    CommandParameter="{Binding .}" />
 
             <Button Text="Add Card"
                     Grid.Row="2"

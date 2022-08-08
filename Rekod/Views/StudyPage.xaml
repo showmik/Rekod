@@ -38,7 +38,8 @@
                         BackgroundColor="Red" />
 
                 <Button Text="Yes" 
-                        BackgroundColor="Green"/>
+                        BackgroundColor="Green"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=RememberCommand}"/>
                 
             </HorizontalStackLayout>
 

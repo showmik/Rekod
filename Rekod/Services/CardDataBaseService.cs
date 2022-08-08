@@ -14,19 +14,14 @@ namespace Rekod.Services
             if (db == null || db.DatabasePath != filePath)
             {
                 db = new SQLiteAsyncConnection(filePath);
-                _ = await db.CreateTableAsync<Card>();
+                await db.CreateTableAsync<Card>();
             }
         }
 
-        public static async Task AddCard(string deckName, string frontText, string backText)
+        public static async Task AddCard(string deckName, Card card)
         {
             await Init(deckName);
-            var card = new Card
-            {
-                FrontText = frontText,
-                BackText = backText
-            };
-            _ = await db.InsertAsync(card);
+            await db.InsertAsync(card);
         }
 
         public static async Task RemoveCard(string deckName, int id)
@@ -34,10 +29,16 @@ namespace Rekod.Services
             await Init(deckName);
         }
 
+        public static async Task UpdateCard(string deckName, Card card)
+        {
+            await Init(deckName);
+            await db.UpdateAsync(card);
+        }
+
         public static async Task<IEnumerable<Card>> GetCards(string deckName)
         {
             await Init(deckName);
-            return await db.Table<Card>().ToListAsync();
+            return await db.QueryAsync<Card>("select * from Cards ORDER BY NextStudyTime ASC");
         }
 
         public static void DeleteDatabase(string deckName)

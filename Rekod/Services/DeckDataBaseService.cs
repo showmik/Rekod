@@ -23,7 +23,7 @@ namespace Rekod.Services
             deck.CardList.Clear();
             var cards = await CardDataBaseService.GetCards(deck.DeckName);
             deck.CardList.AddRange(cards);
-            _ = await db.InsertAsync(deck);
+            await db.InsertAsync(deck);
         }
 
         public static async Task RemoveDeck(int id)
@@ -35,7 +35,7 @@ namespace Rekod.Services
         public static async Task<IEnumerable<Deck>> GetDecks()
         {
             await Init();
-            return await db.Table<Deck>().ToListAsync();
+            return await db.QueryAsync<Deck>("SELECT * FROM Decks");
         }
     }
 }

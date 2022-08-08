@@ -17,30 +17,20 @@ namespace Rekod.ViewModel
         [ObservableProperty]
         private string backText;
 
-        public AddCardViewModel()
-        {
-
-        }
-
         [RelayCommand]
         private async Task Add()
         {
-            if(!string.IsNullOrEmpty(FrontText) && !string.IsNullOrEmpty(BackText))
+            if (!string.IsNullOrEmpty(FrontText) && !string.IsNullOrEmpty(BackText))
             {
-                await CardDataBaseService.AddCard(deck.DeckName, FrontText, BackText);
+                Card card = new Card { FrontText = FrontText, BackText = BackText, Status = CardStatus.New };
+                await CardDataBaseService.AddCard(deck.DeckName, card);
                 FrontText = string.Empty;
                 BackText = string.Empty;
                 await Refresh();
             }
         }
 
-        [RelayCommand]
-        void ChangeText()
-        {
-            frontText = "hello";
-        }
-
-        async Task Refresh()
+        private async Task Refresh()
         {
             deck.CardList.Clear();
             var cards = await CardDataBaseService.GetCards(deck.DeckName);

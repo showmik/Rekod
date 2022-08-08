@@ -32,9 +32,20 @@ namespace Rekod.ViewModel
         [ObservableProperty]
         private string cardText;
 
-        public StudyViewModel()
+        [RelayCommand]
+        private void Ready()
         {
-            
+            if (!isReady)
+            {
+                IsReady = true;
+                cardCollection = deck.CardList;
+                currentCard = cardCollection.FirstOrDefault();
+                CardText = currentCard.BackText;
+            }
+            else
+            {
+                IsReady = false;
+            }
         }
 
         [RelayCommand]
@@ -52,19 +63,10 @@ namespace Rekod.ViewModel
         }
 
         [RelayCommand]
-        private void Ready()
+        private void Remember()
         {
-            if (!isReady)
-            {
-                IsReady = true;
-                cardCollection = deck.CardList;
-                currentCard = cardCollection.FirstOrDefault();
-                CardText = currentCard.BackText;
-            }
-            else
-            {
-                IsReady = false;
-            }
+            currentCard.MoveToNextBox();
+            _ = CardDataBaseService.UpdateCard(deck.DeckName, currentCard);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Rekod.Model
 {
+    [Table("Decks")]
     public class Deck
     {
         [PrimaryKey, AutoIncrement]

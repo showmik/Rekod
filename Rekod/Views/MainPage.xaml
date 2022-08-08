@@ -26,7 +26,9 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type model:Deck}">
+                
                     <SwipeView>
+
                         <SwipeView.RightItems>
                             <SwipeItems>
                                 <SwipeItem Text="Delete"
@@ -48,7 +50,9 @@
                                        FontSize="14" />
                             </Frame>
                         </Grid>
+
                     </SwipeView>
+
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

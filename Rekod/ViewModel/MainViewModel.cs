@@ -14,9 +14,6 @@ namespace Rekod.ViewModel
         
         private ObservableCollection<string> deckNames;
 
-        [ObservableProperty]
-        private ObservableCollection<Deck> deck;
-
         public MainViewModel()
         {
             deckCollection = new ObservableCollection<Deck>();

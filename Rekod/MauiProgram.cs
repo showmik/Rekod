@@ -25,6 +25,9 @@ public static class MauiProgram
         builder.Services.AddTransient<AddCardPage>();
         builder.Services.AddTransient<AddCardViewModel>();
 
+        builder.Services.AddTransient<StudyPage>();
+        builder.Services.AddTransient<StudyViewModel>();
+
         return builder.Build();
 	}
 }

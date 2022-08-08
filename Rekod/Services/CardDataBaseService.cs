@@ -11,12 +11,11 @@ namespace Rekod.Services
         {
             string filePath = Path.Combine(FileSystem.AppDataDirectory, $"{deckName}CardData.db");
 
-            if (db != null && db.DatabasePath == filePath)
+            if (db == null || db.DatabasePath != filePath)
             {
-                return;
+                db = new SQLiteAsyncConnection(filePath);
+                _ = await db.CreateTableAsync<Card>();
             }
-            db = new SQLiteAsyncConnection(filePath);
-            _ = await db.CreateTableAsync<Card>();
         }
 
         public static async Task AddCard(string deckName, string frontText, string backText)
@@ -41,9 +40,8 @@ namespace Rekod.Services
             return await db.Table<Card>().ToListAsync();
         }
 
-        public static async Task DeleteDatabase(string deckName)
+        public static void DeleteDatabase(string deckName)
         {
-            //await db.ExecuteAsync("DELETE FROM Cards");
             File.Delete(Path.Combine(FileSystem.AppDataDirectory, $"{deckName}CardData.db"));
         }
     }

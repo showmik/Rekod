@@ -29,8 +29,9 @@ namespace Rekod.ViewModel
         }
 
         [RelayCommand]
-        private void StudyDeck()
+        private async void StudyDeck()
         {
+            await Shell.Current.GoToAsync(nameof(StudyPage));
         }
 
         [RelayCommand]

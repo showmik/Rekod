@@ -9,13 +9,12 @@ namespace Rekod.Services
 
         private static async Task Init()
         {
-            if (db != null)
+            if (db == null)
             {
-                return;
+                var dataBasePath = Path.Combine(FileSystem.AppDataDirectory, "DeckData.db");
+                db = new SQLiteAsyncConnection(dataBasePath);
+                _ = await db.CreateTableAsync<Deck>();
             }
-            var dataBasePath = Path.Combine(FileSystem.AppDataDirectory, "DeckData.db");
-            db = new SQLiteAsyncConnection(dataBasePath);
-            _ = await db.CreateTableAsync<Deck>();
         }
 
         public static async Task AddDeck(Deck deck)

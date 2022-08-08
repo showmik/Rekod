@@ -29,6 +29,12 @@ namespace Rekod.ViewModel
             }
         }
 
+        [RelayCommand]
+        void ChangeText()
+        {
+            frontText = "hello";
+        }
+
         async Task Refresh()
         {
             deck.CardList.Clear();

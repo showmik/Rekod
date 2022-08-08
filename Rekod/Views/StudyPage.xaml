@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Rekod.ViewModel"
+             x:DataType="viewmodel:StudyViewModel"
+             x:Class="Rekod.Views.StudyPage"
+             Title="Study Page">
+
+    <VerticalStackLayout>
+
+        <Button Text="View Card"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=HelloCardCommand}"
+                CommandParameter="{Binding .}" />
+
+    </VerticalStackLayout>
+    
+</ContentPage>

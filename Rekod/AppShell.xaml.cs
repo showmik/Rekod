@@ -10,5 +10,6 @@ public partial class AppShell : Shell
 
 		Routing.RegisterRoute(nameof(DeckManagementPage), typeof(DeckManagementPage));
 		Routing.RegisterRoute(nameof(AddCardPage), typeof(AddCardPage));
+		Routing.RegisterRoute(nameof(StudyPage), typeof(StudyPage));
 	}
 }

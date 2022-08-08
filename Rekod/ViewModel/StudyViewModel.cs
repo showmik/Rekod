@@ -33,14 +33,12 @@ namespace Rekod.ViewModel
         private string cardText;
 
         [RelayCommand]
-        private void Ready()
+        private async Task Ready()
         {
             if (!isReady)
             {
                 IsReady = true;
-                cardCollection = deck.CardList;
-                currentCard = cardCollection.FirstOrDefault();
-                CardText = currentCard.BackText;
+                await LoadNextCard();
             }
             else
             {
@@ -51,22 +49,55 @@ namespace Rekod.ViewModel
         [RelayCommand]
         private void RevealCard()
         {
-            if (!IsReaveled)
+            if (!IsReaveled && currentCard != null)
             {
-                IsReaveled = true;
                 CardText = currentCard.FrontText;
+                IsReaveled = true;
             }
             else
             {
+                CardText = "Congratulations! No card for today!";
                 IsReaveled = false;
+                return;
             }
         }
 
         [RelayCommand]
-        private void Remember()
+        private async Task Remember()
         {
-            currentCard.MoveToNextBox();
-            _ = CardDataBaseService.UpdateCard(deck.DeckName, currentCard);
+            if (currentCard != null)
+            {
+                currentCard.MoveToNextBox();
+                await CardDataBaseService.UpdateCard(deck.DeckName, currentCard);
+                await LoadNextCard();
+            }
+        }
+
+        [RelayCommand]
+        private async Task Forgot()
+        {
+            if (currentCard != null)
+            {
+                currentCard.MoveToPreviousBox();
+                await CardDataBaseService.UpdateCard(deck.DeckName, currentCard);
+                await LoadNextCard();
+            }
+        }
+
+        private async Task LoadNextCard()
+        {
+            cardCollection = (List<Card>)await CardDataBaseService.GetCardsForStudy(deck.DeckName);
+            currentCard = cardCollection.FirstOrDefault();
+
+            if (currentCard != null && currentCard.NextStudyTime < DateTime.Now)
+            {
+                CardText = currentCard.BackText;
+                IsReaveled = false;
+            }
+            else
+            {
+                CardText = "Congratulations! No card for today!";
+            }
         }
     }
 }

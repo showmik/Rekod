@@ -38,7 +38,13 @@ namespace Rekod.Services
         public static async Task<IEnumerable<Card>> GetCards(string deckName)
         {
             await Init(deckName);
-            return await db.QueryAsync<Card>("select * from Cards ORDER BY NextStudyTime ASC");
+            return await db.QueryAsync<Card>("SELECT * FROM Cards ORDER BY NextStudyTime ASC");
+        }
+
+        public static async Task<IEnumerable<Card>> GetCardsForStudy(string deckName)
+        {
+            await Init(deckName);
+            return await db.QueryAsync<Card>("SELECT * FROM Cards WHERE DoneForToday = FALSE ORDER BY NextStudyTime ASC");
         }
 
         public static void DeleteDatabase(string deckName)

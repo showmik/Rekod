@@ -34,10 +34,11 @@
                                    IsVisible="{Binding IsReaveled}"
                                    HorizontalOptions="Center"
                                    Spacing="10">
-                <Button Text="No"
-                        BackgroundColor="Red" />
+                <Button Text="Forgot"
+                        BackgroundColor="Red"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=ForgotCommand}" />
 
-                <Button Text="Yes" 
+                <Button Text="Remember" 
                         BackgroundColor="Green"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=RememberCommand}"/>
                 

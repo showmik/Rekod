@@ -1,5 +1,4 @@
-﻿using Rekod.Services;
-using SQLite;
+﻿using SQLite;
 
 namespace Rekod.Model
 {
@@ -7,7 +6,7 @@ namespace Rekod.Model
     { New, Learning, Learned, Retired }
 
     public enum Boxes
-    { Box1, Box2, Box3, Box4, Box5, Box6, Box7, Box8, Box9, Box10 }
+    { Box0, Box1, Box2, Box3, Box4, Box5, Box6, Box7, Box8, Box9, Box10 }
 
     [Table("Cards")]
     public class Card
@@ -18,6 +17,7 @@ namespace Rekod.Model
         public CardStatus Status { get; set; }
         public DateTime NextStudyTime { get; set; }
         public Boxes CurrentBox { get; set; }
+        public bool DoneForToday { get; set; }
 
         public string FrontText { get; set; }
         public string BackText { get; set; }
@@ -25,8 +25,9 @@ namespace Rekod.Model
         public Card()
         {
             Status = CardStatus.New;
-            CurrentBox = Boxes.Box1;
-            NextStudyTime = DateTime.Now + GetDuration();
+            CurrentBox = Boxes.Box0;
+            NextStudyTime = DateTime.Now;
+            DoneForToday = false;
         }
 
         public void MoveToNextBox()
@@ -35,6 +36,11 @@ namespace Rekod.Model
             {
                 NextStudyTime = DateTime.Now + GetDuration();
                 CurrentBox++;
+
+                if (NextStudyTime > DateTime.Now)
+                {
+                    DoneForToday = true;
+                }
 
                 if (CurrentBox >= Boxes.Box4)
                 {
@@ -49,12 +55,12 @@ namespace Rekod.Model
 
         public void MoveToPreviousBox()
         {
-            if (CurrentBox != Boxes.Box1)
+            if (CurrentBox != Boxes.Box0)
             {
                 NextStudyTime = DateTime.Now - GetDuration();
                 CurrentBox--;
 
-                if (CurrentBox == Boxes.Box1)
+                if (CurrentBox == Boxes.Box0)
                 {
                     Status = CardStatus.Learning;
                 }
@@ -65,6 +71,8 @@ namespace Rekod.Model
         {
             switch (CurrentBox)
             {
+                case Boxes.Box0:
+                    return new TimeSpan(0, 0, 0);
                 case Boxes.Box1:
                     return new TimeSpan(0, 10, 0);
                 case Boxes.Box2:
@@ -90,7 +98,6 @@ namespace Rekod.Model
 
         public void Refresh()
         {
-            
         }
     }
 }

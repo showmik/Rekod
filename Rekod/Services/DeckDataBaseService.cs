@@ -20,9 +20,6 @@ namespace Rekod.Services
         public static async Task AddDeck(Deck deck)
         {
             await Init();
-            deck.CardList.Clear();
-            var cards = await CardDataBaseService.GetCards(deck.DeckName);
-            deck.CardList.AddRange(cards);
             await db.InsertAsync(deck);
         }
 

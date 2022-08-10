@@ -9,13 +9,5 @@ namespace Rekod.Model
         public int Id { get; set; }
 
         public string DeckName { get; set; }
-
-        [Ignore]
-        public List<Card> CardList { get; set; }
-
-        public Deck()
-        {
-            CardList = new List<Card>();
-        }
     }
 }

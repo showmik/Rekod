@@ -10,12 +10,12 @@ namespace Rekod.ViewModel
     public partial class MainViewModel : ObservableObject
     {
         [ObservableProperty] private ObservableCollection<Deck> deckCollection;
-        private readonly List<string> deckNames;
+        private readonly List<string> deckNameCheckList;
 
         public MainViewModel()
         {
             deckCollection = new ObservableCollection<Deck>();
-            deckNames = new List<string>();
+            deckNameCheckList = new List<string>();
             _ = Refresh();
         }
 
@@ -24,9 +24,9 @@ namespace Rekod.ViewModel
         {
             string deckName = await Application.Current.MainPage.DisplayPromptAsync("Create Deck", "Enter name of the deck:");
 
-            if (!string.IsNullOrEmpty(deckName) && !deckNames.Contains(deckName))
+            if (!string.IsNullOrEmpty(deckName) && !deckNameCheckList.Contains(deckName))
             {
-                deckNames.Add(deckName);
+                deckNameCheckList.Add(deckName);
                 Deck deck = new() {DeckName = deckName};
                 await DeckDataBaseService.AddDeck(deck);
                 await Refresh();
@@ -38,21 +38,16 @@ namespace Rekod.ViewModel
         {
             if (deckCollection.Contains(deck))
             {
-                CardDataBaseService.DeleteDatabase(deck.DeckName);
-                deckNames.Remove(deck.DeckName);
+                deckNameCheckList.Remove(deck.DeckName);
                 await DeckDataBaseService.RemoveDeck(deck.Id);
+                CardDataBaseService.DeleteDatabase(deck.DeckName);
                 await Refresh();
-                deck.CardList.Clear();
             }
         }
 
         [RelayCommand]
         private async Task Tap(Deck deck)
         {
-            deck.CardList.Clear();
-            var cards = await CardDataBaseService.GetCards(deck.DeckName);
-            deck.CardList.AddRange(cards);
-
             await Shell.Current.GoToAsync($"{nameof(DeckManagementPage)}?DeckName={deck.DeckName}");
         }
 
@@ -60,14 +55,13 @@ namespace Rekod.ViewModel
         private async Task Refresh()
         {
             DeckCollection.Clear();
-            deckNames.Clear();
-
+            deckNameCheckList.Clear();
             var deckList = await DeckDataBaseService.GetDecks();
 
             foreach (Deck deck in deckList)
             {
                 DeckCollection.Add(deck);
-                deckNames.Add(deck.DeckName);
+                deckNameCheckList.Add(deck.DeckName);
             }
         }
     }

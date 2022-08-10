@@ -7,73 +7,100 @@
              x:Class="Rekod.Views.DeckManagementPage"
              Title="Study Deck">
 
-    <Grid ColumnDefinitions=".40*, .60*"
-          Margin="10">
+    <Grid ColumnDefinitions=".40*, .60*">
 
-        <CollectionView Grid.RowSpan="4"
-                        Grid.Column="0"
-                        BackgroundColor="LightGray"
-                        VerticalOptions="Fill"
-                        ItemsSource="{Binding Deck.CardList}"
-                        SelectionMode="None">
+        <RefreshView Grid.Column="0"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     VerticalOptions="Fill">
+            
+            <CollectionView ItemsSource="{Binding CardCollection}"
+                            SelectionMode="None"
+                            BackgroundColor="#FDECEF">
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type model:Card}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type model:Card}">
 
                         <Frame Margin="4, 4,4,0"
                                BorderColor="#FDB0C3">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=TapCommand}"
-                                                  CommandParameter="{Binding .}" />
-                        </Frame.GestureRecognizers>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=TapCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
 
-                        <Label Text="{Binding FrontText}"
-                               FontSize="12" />
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="{Binding FrontText}"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
 
-        <Grid Grid.Row="2"
-              Grid.Column="1"
+                                <Label Grid.Row="1"
+                                       Text="{Binding NextStudyTime,StringFormat='{0: dd/MM/yyyy hh:mm tt}'}"
+                                       FontSize="9"
+                                       TextColor="#553772"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <Grid Grid.Column="1"
               RowDefinitions="auto, auto"
-              ColumnDefinitions="auto, auto"
-              RowSpacing="10"
-              ColumnSpacing="10"
+              Margin="5"
               HorizontalOptions="Center">
 
-            <VerticalStackLayout Grid.Row="0"
-                                 Grid.ColumnSpan="2">
+            <VerticalStackLayout Grid.Column="1"
+                                 Margin="10"
+                                 Spacing="5">
                 <Label Text="Front:"
-                       FontSize="12" />
+                       FontSize="13" />
 
-                <Frame>
+                <Frame HeightRequest="80"
+                       BackgroundColor="#FFFDFD">
                     <Label Text="{Binding FrontText}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#553772"
                            VerticalOptions="Center"
                            HorizontalOptions="Center" />
                 </Frame>
 
                 <Label Text="Back:"
-                       FontSize="12" />
+                       FontSize="13" />
 
-                <Frame>
+                <Frame HeightRequest="80"
+                       BackgroundColor="#FFFDFD">
                     <Label Text="{Binding BackText}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#553772"
                            VerticalOptions="Center"
                            HorizontalOptions="Center" />
                 </Frame>
             </VerticalStackLayout>
 
-            <Button Text="Study"
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=StudyDeckCommand}"
-                    CommandParameter="{Binding .}" />
+            <HorizontalStackLayout Grid.Row="1"
+                                   Spacing="10"
+                                   Margin="10">
+                <Button Text="Study"
+                        BackgroundColor="#F5487F"
+                        FontAttributes="Bold"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=StudyDeckCommand}"
+                        CommandParameter="{Binding .}" />
 
-            <Button Text="Add Card"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=AddCardCommand}"
-                    CommandParameter="{Binding .}" />
+                <Button Text="Add"
+                        BackgroundColor="#F5487F"
+                        FontAttributes="Bold"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=AddCardCommand}"
+                        CommandParameter="{Binding .}" />
+
+                <Button Text="Delete"
+                        BackgroundColor="#F5487F"
+                        FontAttributes="Bold"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DeckManagementViewModel}}, Path=DeleteCardCommand}" />
+            </HorizontalStackLayout>
         </Grid>
     </Grid>
 </ContentPage>

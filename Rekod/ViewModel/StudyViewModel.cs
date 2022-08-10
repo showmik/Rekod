@@ -2,35 +2,17 @@
 using CommunityToolkit.Mvvm.Input;
 using Rekod.Model;
 using Rekod.Services;
-using System.Collections.ObjectModel;
 
 namespace Rekod.ViewModel
 {
-    [QueryProperty(nameof(Deck), nameof(Deck))]
+    [QueryProperty("DeckName", "DeckName")]
     public partial class StudyViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private Deck deck;
-
+        [ObservableProperty] private string deckName;
+        [ObservableProperty] private bool isReady;
+        [ObservableProperty] private bool isReaveled;
+        [ObservableProperty] private string cardText;
         private Card currentCard;
-
-        [ObservableProperty]
-        private List<Card> cardCollection;
-
-        [ObservableProperty]
-        private ObservableCollection<Deck> boxCollection;
-
-        [ObservableProperty]
-        private bool isReady = false;
-
-        [ObservableProperty]
-        private bool isReaveled = false;
-
-        [ObservableProperty]
-        private bool revealButtonVisible = true;
-
-        [ObservableProperty]
-        private string cardText;
 
         [RelayCommand]
         private async Task Ready()
@@ -58,17 +40,16 @@ namespace Rekod.ViewModel
             {
                 CardText = "Congratulations! No card for today!";
                 IsReaveled = false;
-                return;
             }
         }
 
         [RelayCommand]
         private async Task Remember()
         {
-            if (currentCard != null)
+            if (currentCard != null && !currentCard.DoneForToday)
             {
                 currentCard.MoveToNextBox();
-                await CardDataBaseService.UpdateCard(deck.DeckName, currentCard);
+                await CardDataBaseService.UpdateCard(deckName, currentCard);
                 await LoadNextCard();
             }
         }
@@ -76,20 +57,20 @@ namespace Rekod.ViewModel
         [RelayCommand]
         private async Task Forgot()
         {
-            if (currentCard != null)
+            if (currentCard != null && !currentCard.DoneForToday)
             {
                 currentCard.MoveToPreviousBox();
-                await CardDataBaseService.UpdateCard(deck.DeckName, currentCard);
+                await CardDataBaseService.UpdateCard(deckName, currentCard);
                 await LoadNextCard();
             }
         }
 
         private async Task LoadNextCard()
         {
-            cardCollection = (List<Card>)await CardDataBaseService.GetCardsForStudy(deck.DeckName);
+            var cardCollection = await CardDataBaseService.GetCards(deckName);
             currentCard = cardCollection.FirstOrDefault();
 
-            if (currentCard != null && currentCard.NextStudyTime < DateTime.Now)
+            if (currentCard != null && !currentCard.DoneForToday)
             {
                 CardText = currentCard.BackText;
                 IsReaveled = false;
@@ -97,7 +78,9 @@ namespace Rekod.ViewModel
             else
             {
                 CardText = "Congratulations! No card for today!";
+                IsReaveled = true;
             }
+            await CardDataBaseService.UpdateCard(deckName, currentCard);
         }
     }
 }

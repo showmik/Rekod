@@ -9,15 +9,13 @@ namespace Rekod.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private ObservableCollection<Deck> deckCollection;
-        
-        private ObservableCollection<string> deckNames;
+        [ObservableProperty] private ObservableCollection<Deck> deckCollection;
+        private readonly List<string> deckNames;
 
         public MainViewModel()
         {
             deckCollection = new ObservableCollection<Deck>();
-            deckNames = new ObservableCollection<string>();
+            deckNames = new List<string>();
             _ = Refresh();
         }
 
@@ -55,11 +53,7 @@ namespace Rekod.ViewModel
             var cards = await CardDataBaseService.GetCards(deck.DeckName);
             deck.CardList.AddRange(cards);
 
-            await Shell.Current.GoToAsync(nameof(DeckManagementPage),
-                new Dictionary<string, object>
-                {
-                    ["Deck"] = deck
-                });
+            await Shell.Current.GoToAsync($"{nameof(DeckManagementPage)}?DeckName={deck.DeckName}");
         }
 
         [RelayCommand]

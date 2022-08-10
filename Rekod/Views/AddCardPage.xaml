@@ -6,18 +6,26 @@
              x:Class="Rekod.Views.AddCardPage"
              Title="Add Card Page">
 
-    <VerticalStackLayout Padding="10"
-                         Margin="10">
+    <VerticalStackLayout 
+                         Margin="20"
+                         Spacing="20">
 
         <Entry Placeholder="Front"
-               Text="{Binding FrontText}" />
+               TextColor="#553772"
+               FontSize="16"
+               Text="{Binding FrontText}"/>
 
         <Entry Placeholder="Back"
+               TextColor="#553772"
+               FontSize="16"
                Text="{Binding BackText}" />
 
         <Button Text="Add"
                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddCardViewModel}}, Path=AddCommand}"
-                CommandParameter="{Binding .}" />
+                CommandParameter="{Binding .}"
+                BackgroundColor="#F5487F"
+                FontAttributes="Bold"
+                WidthRequest="100"/>
 
     </VerticalStackLayout>
 </ContentPage>

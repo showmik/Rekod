@@ -9,13 +9,14 @@
     <Grid RowDefinitions="auto, *, auto">
 
         <Frame Grid.Row="0"
-               BackgroundColor="#2196F3"
+               BackgroundColor="#fff"
                Padding="24"
-               CornerRadius="0">
+               CornerRadius="0"
+               BorderColor="#fff">
 
             <Label Text="Rekod"
                    HorizontalTextAlignment="Center"
-                   TextColor="White"
+                   TextColor="#f5487f"
                    FontAttributes="Bold"
                    FontSize="36" />
         </Frame>
@@ -30,9 +31,9 @@
                     <SwipeView>
 
                         <SwipeView.RightItems>
-                            <SwipeItems>
+                            <SwipeItems >
                                 <SwipeItem Text="Delete"
-                                           BackgroundColor="Tomato"
+                                           BackgroundColor="#f5487f"
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteDeckCommand}"
                                            CommandParameter="{Binding .}" />
                             </SwipeItems>
@@ -40,14 +41,15 @@
 
                         <Grid Padding="0, 5"
                               Margin="10, 0">
-                            <Frame>
+                            <Frame BorderColor="#ff006e">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Frame.GestureRecognizers>
 
                                 <Label Text="{Binding DeckName}"
-                                       FontSize="14" />
+                                       FontSize="14"
+                                       TextColor="#ff006e"/>
                             </Frame>
                         </Grid>
 
@@ -63,7 +65,7 @@
                 Margin="0, 20"
                 WidthRequest="150"
                 HeightRequest="50"
-                BackgroundColor="Coral"
+                BackgroundColor="#f5487f"
                 Command="{Binding AddDeckCommand}" />
     </Grid>
 </ContentPage>

@@ -15,7 +15,7 @@
 		<ApplicationTitle>Rekod</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.rekod</ApplicationId>
+		<ApplicationId>com.siddikashafinaz.rekod</ApplicationId>
 		<ApplicationIdGuid>B730F505-23DE-4E40-949D-3061FF1C96A0</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -33,9 +33,10 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appiconfg.svg" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#F5487F" BaseSize="256,256" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -46,6 +47,10 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\AppIcon\appiconfg.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

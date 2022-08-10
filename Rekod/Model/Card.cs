@@ -17,7 +17,12 @@ namespace Rekod.Model
         public CardStatus Status { get; set; }
         public DateTime NextStudyTime { get; set; }
         public Boxes CurrentBox { get; set; }
-        public bool DoneForToday { get; set; }
+
+        public bool DoneForToday
+        {
+            get { return NextStudyTime > DateTime.Now; }
+            set { }
+        }
 
         public string FrontText { get; set; }
         public string BackText { get; set; }
@@ -34,13 +39,8 @@ namespace Rekod.Model
         {
             if (CurrentBox != Boxes.Box10)
             {
-                NextStudyTime = DateTime.Now + GetDuration();
                 CurrentBox++;
-
-                if (NextStudyTime > DateTime.Now)
-                {
-                    DoneForToday = true;
-                }
+                NextStudyTime = DateTime.Now.Add(GetDuration());
 
                 if (CurrentBox >= Boxes.Box4)
                 {
@@ -57,7 +57,7 @@ namespace Rekod.Model
         {
             if (CurrentBox != Boxes.Box0)
             {
-                NextStudyTime = DateTime.Now - GetDuration();
+                NextStudyTime = DateTime.Now.Subtract(GetDuration());
                 CurrentBox--;
 
                 if (CurrentBox == Boxes.Box0)
@@ -67,12 +67,12 @@ namespace Rekod.Model
             }
         }
 
-        public TimeSpan GetDuration()
+        private TimeSpan GetDuration()
         {
             switch (CurrentBox)
             {
                 case Boxes.Box0:
-                    return new TimeSpan(0, 0, 0);
+                    return new TimeSpan(0, 0, 0, 0);
                 case Boxes.Box1:
                     return new TimeSpan(0, 10, 0);
                 case Boxes.Box2:
@@ -94,10 +94,6 @@ namespace Rekod.Model
                 default:
                     return TimeSpan.Zero;
             }
-        }
-
-        public void Refresh()
-        {
         }
     }
 }

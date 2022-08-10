@@ -21,33 +21,43 @@
         
         <Grid RowDefinitions="auto, auto, auto"
               RowSpacing="5"
-              Margin="50, 10"
+              Margin="50, 30"
               IsVisible="{Binding IsReady}">
 
-            <Frame>
+            <Frame HeightRequest="150">
                 <Label Text="{Binding CardText}"
                        VerticalOptions="Center"
-                       HorizontalOptions="Center" />
+                       HorizontalTextAlignment="Center"
+                       TextColor="#553772"
+                       FontSize="16"/>
             </Frame>
 
             <HorizontalStackLayout Grid.Row="2"
                                    IsVisible="{Binding IsReaveled}"
                                    HorizontalOptions="Center"
-                                   Spacing="10">
+                                   Spacing="20"
+                                   Margin="20">
                 <Button Text="Forgot"
-                        BackgroundColor="Red"
+                        WidthRequest="120"
+                        FontAttributes="Bold"
+                        BackgroundColor="#C7417B"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=ForgotCommand}" />
 
-                <Button Text="Remember" 
-                        BackgroundColor="Green"
+                <Button Text="Remember"
+                        BackgroundColor="#00C49A"
+                        FontAttributes="Bold"
+                        WidthRequest="120"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=RememberCommand}"/>
                 
             </HorizontalStackLayout>
 
             <HorizontalStackLayout Grid.Row="2"
                                    HorizontalOptions="Center"
+                                   Margin="20"
                                    IsVisible="{Binding IsReaveled, Converter={StaticResource InverseBoolConverter}}">
                 <Button Text="Reveal Card"
+                        WidthRequest="100"
+                        FontAttributes="Bold"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:StudyViewModel}}, Path=RevealCardCommand}" />
             </HorizontalStackLayout>
         </Grid>
